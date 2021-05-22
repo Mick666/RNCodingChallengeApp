@@ -1,59 +1,47 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
 } from 'react-native';
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { API_KEY } from '@env';
 
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+import Details from './components/Details';
+import Home from './components/Home';
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [page, setPage] = useState('home');
+  const [detailedArticle, setArticle] = useState(null);
+  const [articles, setArticles] = useState(null);
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: '#e1e4e8'
   };
+
+  const fetchNewsArticles = async (setRefreshing) => {
+    const fetchResult = await fetch(`https://newsapi.org/v2/top-headlines?country=us&category=general&apiKey=${API_KEY}`);
+    const json = await fetchResult.json();
+    setArticles(json);
+    if (setRefreshing) setRefreshing(false);
+  };
+
+  useEffect(() => {
+    fetchNewsArticles();
+  }, []);
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <Text>Testing</Text>
+      {page === 'home' ?
+        <Home
+          setPage={setPage}
+          articles={articles}
+          setArticle={setArticle}
+          fetchNewsArticles={fetchNewsArticles}
+        />
+        :
+        <Details
+          detailedArticle={detailedArticle}
+          setPage={setPage}
+        />
+      }
     </SafeAreaView>
   );
 };
