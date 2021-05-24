@@ -47,7 +47,10 @@ const Article = ({ article }) => {
                 </View>
                 <Text>{article.description ? article.description.split('\n')[0] : ''}</Text>
             </View>
-            <Image source={{ uri: article.urlToImage }} style={styles.image} />
+            <Image
+                source={{ uri: article.urlToImage ? article.urlToImage : 'https://i.imgur.com/vBB0MLy.png' }}
+                style={styles.image}
+            />
         </View>
     );
 };

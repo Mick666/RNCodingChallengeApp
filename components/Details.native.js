@@ -66,7 +66,7 @@ const Details = ({ detailedArticle, setPage }) => {
                 </Text>
             </View>
             <Image
-                source={{ uri: detailedArticle.urlToImage }} 
+                source={{ uri: detailedArticle.urlToImage ? detailedArticle.urlToImage : 'https://i.imgur.com/vBB0MLy.png' }} 
                 style={styles.image}
             />
             <Text style={styles.content}>

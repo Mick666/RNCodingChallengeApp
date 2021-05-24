@@ -23,9 +23,11 @@ const Home = ({ setPage, articles, setArticle, fetchNewsArticles }) => {
             data={articles.articles}
             renderItem={(({ item, index }) => {
                 return (
-                    <Pressable onPress={() => changePage(item)}>
+                    <Pressable
+                        onPress={() => changePage(item)}
+                        key={index}
+                    >
                         <Article
-                            key={index}
                             article={item}
                         />
                     </Pressable>
